@@ -12,19 +12,9 @@ case class Matrix[@specialized(Float,Double,Int) +A](
   vcols: Int,
   mvect : Vector[A])
 
-trait MatrixImplicits {
+trait MatrixImplicits extends Base {
 
-  // forward definitions - the actual definitions are found in the implemented
-  // classes.
-  def getRow[A](r: Int)(m: Matrix[A]) : Option[Vector[A]] = ???
-  def fromList[A](n: Int)(m: Int)(xs: List[A]) : Matrix[A] = ???
-  def unsafeMatrix[A](m: Matrix[A]) : Matrix[A] = ???
-  def matrix[@specialized(Int,Double,Float) A](n: Int)(m: Int)(f: (Int, Int) ⇒ A) : Matrix[A] = ???
-  def <->[A](m: Matrix[A])(n: Matrix[A]) : Matrix[A] = ???
-  def <|>[A](m: Matrix[A])(n: Matrix[A]) : Matrix[A] = ???
-  // end of forward definitions
-
-  implicit def matrixSG[A:Semigroup] : Semigroup[Matrix[A]] = new Semigroup[Matrix[A]] {
+  implicit def matrixSemigroup[A:Semigroup] : Semigroup[Matrix[A]] = new Semigroup[Matrix[A]] {
     def append(f1: Matrix[A], f2: ⇒ Matrix[A]) : Matrix[A] = {
       matrix(math.max(f1.nrows, f2.nrows))(math.max(f1.ncols, f2.ncols))((i: Int, j:Int) ⇒
         (safeGet(i,j)(f1) |+| safeGet(i, j)(f2)).getOrElse(0.asInstanceOf[A])
@@ -32,7 +22,7 @@ trait MatrixImplicits {
     }
   }
 
-  implicit def matrixM[A:Monoid] : Monoid[Matrix[A]] = new Monoid[Matrix[A]] {
+  implicit def matrixMonoid[A:Monoid] : Monoid[Matrix[A]] = new Monoid[Matrix[A]] {
     def zero = fromList(1)(1)(0.asInstanceOf[A] ::Nil)
     def append(f1: Matrix[A], f2: ⇒ Matrix[A]) : Matrix[A] = {
       matrix(math.max(f1.nrows, f2.nrows))(math.max(f1.ncols, f2.ncols))((i: Int, j:Int) ⇒
@@ -41,21 +31,21 @@ trait MatrixImplicits {
     }
   }
 
-  implicit val matrixF : Functor[Matrix] = new Functor[Matrix] {
+  implicit val matrixFunctor : Functor[Matrix] = new Functor[Matrix] {
     def map[A,B](fa: Matrix[A])(f : A ⇒ B) : Matrix[B] = fa.copy(mvect = fa.mvect.map(f(_)))
   }
 
-  implicit val matrixA : Applicative[Matrix] = new Applicative[Matrix] {
+  implicit val matrixAp : Applicative[Matrix] = new Applicative[Matrix] {
     def point[A](a: ⇒ A) = fromList(1)(1)(a :: Nil)
 
     def ap[A,B](fa: ⇒ Matrix[A])(f: ⇒ Matrix[A ⇒ B]) : Matrix[B] = {
       // TODO: val F = implicitly[Functor[Matrix]] appears to be calling itself
-      val F = matrixF
+      val F = matrixFunctor
       flatten(F.map(f)(g ⇒ F.map(fa)(a ⇒ g(a))))
     }
   }
 
-  implicit def matrixEQ[A] : Equal[Matrix[A]] = new Equal[Matrix[A]] {
+  implicit def matrixEqual[A] : Equal[Matrix[A]] = new Equal[Matrix[A]] {
     def equal(a1: Matrix[A], a2: Matrix[A]) : Boolean = {
       if (a1.nrows == a2.nrows && a1.ncols == a2.ncols && a1.mvect.equals(a2.mvect))
         true else false

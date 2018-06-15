@@ -17,6 +17,7 @@ addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.6" cross CrossVersi
 
 enablePlugins(TutPlugin)
 enablePlugins(MicrositesPlugin)
+enablePlugins(JmhPlugin)
 
 // if your project uses both 2.10 and polymorphic lambdas
 libraryDependencies ++= (scalaBinaryVersion.value match {
