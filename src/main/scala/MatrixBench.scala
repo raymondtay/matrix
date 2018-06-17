@@ -9,6 +9,6 @@ class MatrixStd {
   import ops._
 
   @Benchmark
-  def createMatrices = matrix(10000)(10000)((i, j) => i+j)
+  def createMatrices = matrix(1000)(1000)((i, j) => i+j)
 
 }

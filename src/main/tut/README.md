@@ -1,7 +1,7 @@
 Here is how you would combine matrices
 ```tut
 import scalaz._, Scalaz._
-import m.ops.{matrixM,matrixS}
+import m.ops.{matrixMonoid,matrixS}
 val a = m.ops.fromList(3)(3)(1 to 100 toList)
 val b = m.ops.fromList(3)(3)(1 to 100 toList)
 (a |+| b).shows
@@ -28,7 +28,7 @@ combineRows(2,2,1)(a).shows
 # Scale a row of the matrix by a scalar
 ```tut
 import scalaz._, Scalaz._
-import m.ops.{matrixS, matrixF}
+import m.ops.{matrixS, matrixFunctor}
 val a = m.ops.fromList(3)(3)(1 to 100 toList)
 m.ops.scaleRow(2)(3)(a).shows
 ```
@@ -36,7 +36,7 @@ m.ops.scaleRow(2)(3)(a).shows
 # Scale a matrix by a scalar
 ```tut
 import scalaz._, Scalaz._
-import m.ops.{matrixS, matrixF}
+import m.ops.{matrixS, matrixFunctor}
 val a = m.ops.fromList(3)(3)(1 to 100 toList)
 m.ops.scaleMatrix(2)(a).shows
 ```
@@ -44,7 +44,7 @@ m.ops.scaleMatrix(2)(a).shows
 # Swap rows of a matrix
 ```tut
 import scalaz._, Scalaz._
-import m.ops.{matrixS, matrixF}
+import m.ops.{matrixS, matrixFunctor}
 val a = m.ops.fromList(3)(3)(1 to 100 toList)
 a.shows
 
@@ -54,7 +54,7 @@ m.ops.switchRows(1)(2)(a).shows
 # Swap columns of a matrix
 ```tut
 import scalaz._, Scalaz._
-import m.ops.{matrixS, matrixF}
+import m.ops.{matrixS, matrixFunctor}
 val a = m.ops.fromList(3)(3)(1 to 100 toList)
 a.shows
 
@@ -64,7 +64,7 @@ m.ops.switchCols(1)(2)(a).shows
 # Minor matrix
 ```tut
 import scalaz._, Scalaz._
-import m.ops.{matrixS, matrixF}
+import m.ops.{matrixS, matrixFunctor}
 val a = m.ops.fromList(3)(3)(1 to 100 toList)
 a.shows
 
@@ -78,7 +78,7 @@ m.ops.minorMatrix(3)(3)(a).shows
 # Splitting matrix into 4-blocks from an element
 ```tut
 import scalaz._, Scalaz._
-import m.ops.{matrixS, matrixF}
+import m.ops.{matrixS, matrixFunctor}
 val a = m.ops.fromList(3)(3)(1 to 100 toList)
 a.shows
 
@@ -93,7 +93,7 @@ m.ops.splitBlocks(3)(3)(b).shows
 # Standard matrix multiplication
 ```tut
 import scalaz._, Scalaz._
-import m.ops.{mult, matrixS, matrixF}
+import m.ops.{mult, matrixS, matrixFunctor}
 val a = m.ops.fromList(3)(3)(1 to 10 toList)
 val b = m.ops.fromList(3)(3)(10 to 30 toList)
 a.shows
@@ -113,7 +113,7 @@ z.shows
 # Matrix multiplication via Strassen's method
 ```tut
 import scalaz._, Scalaz._
-import m.ops.{multStrassen, matrixS, matrixF}
+import m.ops.{multStrassen, matrixS, matrixFunctor}
 val a = m.ops.fromList(3)(3)(1 to 10 toList)
 val b = m.ops.fromList(3)(3)(10 to 30 toList)
 a.shows
@@ -125,8 +125,8 @@ val m2 = multStrassen(a, b)
 m1.shows
 m2.shows
 
-import m.ops.matrixEQ
-m2.map(m => matrixEQ.equal(m, m1))
+import m.ops.matrixEqual
+m2.map(m => matrixEqual.equal(m, m1))
 
 val c = m.ops.fromList(4)(4)(-1.2f to 19.6f by 1.2f toList)
 val d = m.ops.fromList(4)(4)(-1.2f to 19.6f by 1.2f toList)
@@ -139,7 +139,7 @@ y.shows
 # Splitting matrix into 4-blocks from an element, re-joining them
 ```tut
 import scalaz._, Scalaz._
-import m.ops.{joinBlocks, matrixS, matrixF}
+import m.ops.{joinBlocks, matrixS, matrixFunctor}
 val a = m.ops.fromList(3)(3)(1 to 100 toList)
 a.shows
 m.ops.splitBlocks(2)(2)(a).shows
