@@ -478,7 +478,7 @@ class MatrixOps extends MatrixImplicits {
   /** 
     * Standard matrix-matrix multiplication
     * @param m
-    * @paran n
+    * @param n
     * @return
     */
   def mult[@specialized (Float,Double,Int) A:Numeric](m : Matrix[A], n : Matrix[A]) : Matrix[A] = {

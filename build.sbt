@@ -1,3 +1,4 @@
+import xerial.sbt.Sonatype._
 name := "matrix"
 
 version := "0.5"
@@ -27,3 +28,18 @@ libraryDependencies ++= (scalaBinaryVersion.value match {
     Nil
 })
 
+publishTo := sonatypePublishTo.value
+sonatypeProfileName := "com.github.raymondtay"
+publishMavenStyle := true
+licenses := Seq("MIT" -> url("https://github.com/raymondtay/matrix/LICENSE"))
+sonatypeProjectHosting := Some(GitHubHosting("raymondtay", "matrix", "raymond.tay@yahoo.com"))
+homepage := Some(url("https://github.com/raymondtay/matrix/wiki"))
+scmInfo := Some(
+  ScmInfo(
+    url("https://github.com/raymondtay/matrix"),
+    "scm:git@github.com:raymondtay/matrix.git"
+  )
+)
+developers := List(
+  Developer(id="tayboonl", name="Raymond Tay", email="raymond.tay@yahoo.com", url=url("https://twitter.com/RaymondTayBL"))
+)
