@@ -41,5 +41,15 @@ scmInfo := Some(
   )
 )
 developers := List(
-  Developer(id="tayboonl", name="Raymond Tay", email="raymond.tay@yahoo.com", url=url("https://twitter.com/RaymondTayBL"))
+  Developer(id="tayboonl",
+            name="Raymond Tay",
+            email="raymond.tay@yahoo.com",
+            url=url("https://twitter.com/RaymondTayBL"))
 )
+
+useGpg := true
+publishConfiguration := publishConfiguration.value.withOverwrite(true)
+publishLocalConfiguration := publishLocalConfiguration.value.withOverwrite(true)
+
+pgpPublicRing := file("/Users/raymondtay/.sbt/gpg/pubring.asc")
+
